@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/providers/profile_screen_provider.dart';
 import 'package:instagram_clone/screens/story_view.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -11,13 +13,24 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  List<String> user_post_images = ['assets/images/user_post_1.png','assets/images/user_post_2.png','assets/images/user_post_3.png','assets/images/user_post_4.png','assets/images/user_post_5.png','assets/images/user_post_6.png','assets/images/user_post_7.png','assets/images/user_post_8.png','assets/images/user_post_9.png',];
-  bool following = false;
-  int nav_activeIndex = 0;
-  int naav_previosIndex = 0;
+  List<String> user_post_images = [
+    'assets/images/user_post_1.png',
+    'assets/images/user_post_2.png',
+    'assets/images/user_post_3.png',
+    'assets/images/user_post_4.png',
+    'assets/images/user_post_5.png',
+    'assets/images/user_post_6.png',
+    'assets/images/user_post_7.png',
+    'assets/images/user_post_8.png',
+    'assets/images/user_post_9.png',
+  ];
+
   @override
   Widget build(BuildContext context) {
     print('Profile Screen build');
+
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -130,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 //Links
                 InkWell(
-                  onTap: () async{
+                  onTap: () async {
                     const url = 'https://www.leevia.com/';
                     final uri = Uri.parse(url);
                     if (await canLaunchUrl(uri)) {
@@ -152,152 +165,188 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          following = !following;
-                        });
-                      },
-                      child: Container(
-                        height: 35,
-                        width: MediaQuery.of(context).size.width / 2 - 40,
-                        decoration: BoxDecoration(
-                          color:following? Colors.transparent: const Color.fromARGB(255, 56, 152, 243),
-                          borderRadius: BorderRadius.circular(6.0),
-                          border: following? Border.all( color: Colors.black12 , width: 1.5): Border(),
-
-                        ),
-                        child:  Center(
-                          child: Text(
-                            following? "Following" : "Follow",
-                            style: TextStyle(
-                                color: following ? Colors.black: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'sfpro'),
+                    GestureDetector(onTap: () {
+                      profileProvider.setFollowing();
+                    }, child: Consumer<ProfileProvider>(
+                      builder: (context, value, child) {
+                        return Container(
+                          height: 35,
+                          width: MediaQuery.of(context).size.width / 2 - 40,
+                          decoration: BoxDecoration(
+                            color: value.following
+                                ? Colors.transparent
+                                : const Color.fromARGB(255, 56, 152, 243),
+                            borderRadius: BorderRadius.circular(6.0),
+                            border: value.following
+                                ? Border.all(color: Colors.black12, width: 1.5)
+                                : Border(),
                           ),
+                          child: Center(
+                            child: Text(
+                              value.following ? "Following" : "Follow",
+                              style: TextStyle(
+                                  color: value.following
+                                      ? Colors.black
+                                      : Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'sfpro'),
+                            ),
+                          ),
+                        );
+                      },
+                    )),
+                    Container(
+                      height: 35,
+                      width: MediaQuery.of(context).size.width / 2 - 40,
+                      decoration: BoxDecoration(
+                        // color:const Color.fromARGB(255, 56, 152, 243),
+                        border: Border.all(color: Colors.black12, width: 1.5),
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Message",
+                          style: TextStyle(
+                              // color: Colors.white,
+                              fontSize: 16,
+                              fontFamily: 'sfpro'),
                         ),
                       ),
                     ),
                     Container(
-                  height: 35,
-                  width: MediaQuery.of(context).size.width / 2 - 40,
-                  decoration: BoxDecoration(
-                    // color:const Color.fromARGB(255, 56, 152, 243),
-                    border: Border.all( color: Colors.black12 , width: 1.5),
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Message",
-                      style: TextStyle(
-                          // color: Colors.white,
-                          fontSize: 16,
-                          fontFamily: 'sfpro'),
-                    ),
-                  ),
-                ),
-                 Container(
-                  height: 35,
-                  width: 35,
-                  decoration: BoxDecoration(
-                    // color:const Color.fromARGB(255, 56, 152, 243),
-                    border: Border.all( color: Colors.black12 , width: 1.5),
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  child:Image(image: AssetImage('assets/icons/dropdown.png'))
-                )
+                        height: 35,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          // color:const Color.fromARGB(255, 56, 152, 243),
+                          border: Border.all(color: Colors.black12, width: 1.5),
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                        child: const Image(
+                            image: AssetImage('assets/icons/dropdown.png')))
                   ],
                 ),
 
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 //STORIES Circles
 
                 Row(
-                  children:  [
-                     InkWell(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context )=> const StoryView()));
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const StoryView()));
                       },
-                       child: const ClipOval(
-                        child: Image(image: AssetImage('assets/images/story_beach.png' ,) ,fit: BoxFit.cover , height: 70 , width: 70,),
-                                         ),
-                     ),
-                    const SizedBox(width: 10,),
-                    const ClipOval(
-                      child: Image(image: AssetImage('assets/images/story_flower.png' ,) ,fit: BoxFit.cover , height: 70 , width: 70,),
+                      child: const ClipOval(
+                        child: Image(
+                          image: AssetImage(
+                            'assets/images/story_beach.png',
+                          ),
+                          fit: BoxFit.cover,
+                          height: 70,
+                          width: 70,
+                        ),
+                      ),
                     ),
-                    const SizedBox(width: 10,),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     const ClipOval(
-                      child: Image(image: AssetImage('assets/images/story_sky.png' ,) ,fit: BoxFit.cover , height: 70 , width: 70,),
+                      child: Image(
+                        image: AssetImage(
+                          'assets/images/story_flower.png',
+                        ),
+                        fit: BoxFit.cover,
+                        height: 70,
+                        width: 70,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const ClipOval(
+                      child: Image(
+                        image: AssetImage(
+                          'assets/images/story_sky.png',
+                        ),
+                        fit: BoxFit.cover,
+                        height: 70,
+                        width: 70,
+                      ),
                     ),
                   ],
                 ),
-                
               ],
             ),
           ),
           //NAVIGATION
-                Row(
-                  children: [
-                    user_post_nav(context , 0,'assets/icons/Gridbl.png','assets/icons/Gridgr.png'),
-                    user_post_nav(context , 1,'assets/icons/Reelbl.png','assets/icons/Reelgr.png'),
-                    user_post_nav(context , 2,'assets/icons/IGTVbl.png','assets/icons/IGTVgr.png'),
-                    user_post_nav(context , 3,'assets/icons/Tagsbl.png','assets/icons/Tagsgr.png')
-                    // Container(
-                    //   height: 40,
-                    //   width: MediaQuery.of(context).size.width/4,
-                    //   decoration: const BoxDecoration(
-                    //     // border: Border(bottom: BorderSide(width: 2)),
-                    //   ),
-                    //   child: const Image(image: AssetImage('assets/icons/Reel.png')),
-                    //   // child: const Icon(CupertinoIcons.bolt_horizontal_circle , size: 30,),
-                    // ),
-                    // Container(
-                    //   height: 40,
-                    //   width: MediaQuery.of(context).size.width/4,
-                    //   decoration: const BoxDecoration(
-                    //     // border: Border(bottom: BorderSide(width: 2)),
-                    //   ),
-                    //   child: const Image(image: AssetImage('assets/icons/IGTV.png')),
-                    //   // child: const Icon(CupertinoIcons.rectangle_on_rectangle_angled , size: 30,),
-                    // ),
-                    // Container(
-                    //   height: 40,
-                    //   width: MediaQuery.of(context).size.width/4,
-                    //   decoration: const BoxDecoration(
-                    //     // border: Border(bottom: BorderSide(width: 2)),
-                    //   ),
-                    //   child: const Image(image: AssetImage('assets/icons/Tags.png')),
-                    //   // child: const Icon(CupertinoIcons.tags , size: 30,),
-                    // ),
-
-                  ],
-                ),
+          Row(
+            children: [
+              user_post_nav(context, 0, 'assets/icons/Gridbl.png'),
+              user_post_nav(context, 1, 'assets/icons/reels.png'),
+              user_post_nav(context, 2, 'assets/icons/IGTV.png'),
+              user_post_nav(context, 3, 'assets/icons/Tagsbl.png')
+              // Container(
+              //   height: 40,
+              //   width: MediaQuery.of(context).size.width/4,
+              //   decoration: const BoxDecoration(
+              //     // border: Border(bottom: BorderSide(width: 2)),
+              //   ),
+              //   child: const Image(image: AssetImage('assets/icons/Reel.png')),
+              //   // child: const Icon(CupertinoIcons.bolt_horizontal_circle , size: 30,),
+              // ),
+              // Container(
+              //   height: 40,
+              //   width: MediaQuery.of(context).size.width/4,
+              //   decoration: const BoxDecoration(
+              //     // border: Border(bottom: BorderSide(width: 2)),
+              //   ),
+              //   child: const Image(image: AssetImage('assets/icons/IGTV.png')),
+              //   // child: const Icon(CupertinoIcons.rectangle_on_rectangle_angled , size: 30,),
+              // ),
+              // Container(
+              //   height: 40,
+              //   width: MediaQuery.of(context).size.width/4,
+              //   decoration: const BoxDecoration(
+              //     // border: Border(bottom: BorderSide(width: 2)),
+              //   ),
+              //   child: const Image(image: AssetImage('assets/icons/Tags.png')),
+              //   // child: const Icon(CupertinoIcons.tags , size: 30,),
+              // ),
+            ],
+          ),
           SizedBox(
             height: 343,
             width: MediaQuery.of(context).size.width,
-            child: GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 2,
-              mainAxisSpacing: 2,
-            ), 
-            itemCount: user_post_images.length,
-            itemBuilder: ((context, index) {
-              return SizedBox(
-                height: 200,
-                width: 200,
-                child: Image(image: AssetImage(user_post_images[index]) , fit: BoxFit.cover,),
-              );
-            })),
+            child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 2,
+                  mainAxisSpacing: 2,
+                ),
+                itemCount: user_post_images.length,
+                itemBuilder: ((context, index) {
+                  return SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: Image(
+                      image: AssetImage(user_post_images[index]),
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                })),
           )
           // SizedBox(
           //   height: 200,
           //   width: MediaQuery.of(context).size.width,
-          //   child: Expanded(child: 
+          //   child: Expanded(child:
           //   SingleChildScrollView(
           //     child: GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           //       crossAxisCount: 3,
-          //     ), 
+          //     ),
           //     itemCount: 9,
           //     itemBuilder: ((context, index) {
           //       return Container(
@@ -313,36 +362,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget user_post_nav(BuildContext context , index , String active_image_path , String inactive_image_path){
-    return GestureDetector(
-      onTap: (){
-         setState(() {
-        naav_previosIndex = nav_activeIndex;
-      nav_activeIndex = index;
-    });
+  Widget user_post_nav(BuildContext context, index, String activeImagePath) {
+    final profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+    return GestureDetector(onTap: () {
+      profileProvider.setNavPreviousIndex(profileProvider.nav_activeIndex);
+      profileProvider.setNavActiveIndex(index);
+      //      setState(() {
+      //     naav_previosIndex = nav_activeIndex;
+      //   nav_activeIndex = index;
+      // });
+    }, child: Consumer<ProfileProvider>(
+      builder: (context, value, child) {
+        if(value.nav_activeIndex == index && value.nav_previosIndex < value.nav_activeIndex){
+           return nav_underline_animation(value, index, activeImagePath , const Duration(milliseconds: 400 ), CrossAxisAlignment.start);
+        }
+
+        else if (value.nav_activeIndex == index && value.nav_previosIndex > value.nav_activeIndex){
+          return nav_underline_animation(value, index, activeImagePath , const Duration(milliseconds: 400 ), CrossAxisAlignment.end);
+        }
+        else{
+          if(value.nav_previosIndex < value.nav_activeIndex){
+            
+          return nav_underline_animation(value, index, activeImagePath , const Duration(milliseconds: 400 ), CrossAxisAlignment.end);
+          }
+          else{
+            
+          return nav_underline_animation(value, index, activeImagePath , const Duration(milliseconds: 400 ), CrossAxisAlignment.start);
+          }
+        } 
       },
-      child: Column(
-        crossAxisAlignment: nav_activeIndex == index && naav_previosIndex < index?  CrossAxisAlignment.start : CrossAxisAlignment.end,
+    ));
+  }
+
+  // ignore: non_constant_identifier_names
+  Column nav_underline_animation(ProfileProvider value, index, String activeImagePath , Duration duration , CrossAxisAlignment csa) {
+    return Column(
+        crossAxisAlignment: csa ,
         children: [
           Container(
-            
-                          height: 40,
-                          width: MediaQuery.of(context).size.width/4,
-                          decoration: BoxDecoration(
-                            // border: nav_activeIndex == index ? const Border(bottom: BorderSide(width: 2)): const Border() ,
-                          ),
-                          child:  Image(image: AssetImage(nav_activeIndex == index ? active_image_path : inactive_image_path)),
-                          // child: const Icon(CupertinoIcons.square_grid_2x2 , size: 30,),
-                        ),
-                        AnimatedContainer(
-                          duration: Duration(milliseconds: 300),
-                          // transform: Matrix4.identity()..translate(MediaQuery.of(context).size.width/16),
-                          height: 2,
-                          width: nav_activeIndex == index? MediaQuery.of(context).size.width/4: 0,
-                          color: Colors.black,
-                        )
+            height: 40,
+            width: MediaQuery.of(context).size.width / 4,
+            decoration: const BoxDecoration(
+                // border: nav_activeIndex == index ? const Border(bottom: BorderSide(width: 2)): const Border() ,
+                ),
+            child: Image(
+              image: AssetImage(activeImagePath),
+              color:
+                  value.nav_activeIndex == index ? Colors.black : Colors.grey,
+            ),
+            // child: const Icon(CupertinoIcons.square_grid_2x2 , size: 30,),
+          ),
+          AnimatedContainer(
+            duration: duration,
+            // transform: Matrix4.identity()..translate(MediaQuery.of(context).size.width/16),
+            height: 2,
+            width: value.nav_activeIndex == index
+                ? MediaQuery.of(context).size.width / 4
+                : 0,
+            color: Colors.black,
+          )
         ],
-      ),
-    );
+      );
   }
 }
