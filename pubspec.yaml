@@ -33,6 +33,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.6.0
+  flutter_staggered_grid_view: ^0.6.2
   provider: ^6.0.5
   url_launcher: ^6.1.7
 
@@ -53,9 +54,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/
     - assets/icons/
-    - assets/images/
-    - assets/images/story/
+    - assets/landscapes/
+    - assets/portraits/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

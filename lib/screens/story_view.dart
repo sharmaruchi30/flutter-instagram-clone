@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-
 class StoryView extends StatefulWidget {
-  const StoryView({super.key});
+  String imgPath;
+  StoryView({
+    Key? key,
+    required this.imgPath,
+  }) : super(key: key);
 
   @override
   State<StoryView> createState() => _StoryViewState();
@@ -40,9 +43,9 @@ class _StoryViewState extends State<StoryView> {
           children: [
 
             Center(
-              child: Container(
-                
-                child: Text("STORY VIEW PAGE"),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Image(image: AssetImage(widget.imgPath) , fit: BoxFit.fill,),
               ),
             ),
 
@@ -60,10 +63,10 @@ class _StoryViewState extends State<StoryView> {
                     children: const [
                       SizedBox(width: 10,),
                       CircleAvatar(
-                        child:  Image(image: AssetImage('assets/images/avatar.png')),
+                        backgroundImage:   AssetImage('assets/profile_.jpg'),
                       ),
                       SizedBox(width: 10,),
-                      Text('Piero Borgo' , 
+                      Text('_r_sharma' , 
                       style: TextStyle(
                         fontFamily: 'sfpro',
                         fontSize: 16,

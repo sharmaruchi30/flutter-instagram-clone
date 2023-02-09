@@ -54,11 +54,11 @@ class _CommentsPageState extends State<CommentsPage> {
               const SizedBox(height: 10,),
               Row(
                 children: [
-                   const ClipOval(
-                    
-                    child: Image(image: AssetImage("assets/images/avatar.png" ) , height: 35,),
+                   const CircleAvatar(
+                    radius: 25,
+                    backgroundImage:  AssetImage("assets/profile_.jpg" ) ,
                   ),
-                  const SizedBox(width: 5,),
+                  const SizedBox(width: 15,),
                   Column( 
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

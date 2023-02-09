@@ -24,7 +24,7 @@ class _CommentTileState extends State<CommentTile> {
             children: [
               const ClipOval(
                 child: Image(
-                  image: AssetImage('assets/images/story/Profile 4.jpg'),
+                  image: AssetImage('assets/profile3.jpg'),
                   fit: BoxFit.cover,
                   height: 30,
                   width: 30,
@@ -37,7 +37,7 @@ class _CommentTileState extends State<CommentTile> {
               RichText(
                 //Username
                 text: const TextSpan(
-                    text: "enzetto ",
+                    text: "username ",
                     style: TextStyle(
                         fontFamily: 'sfpro',
                         fontWeight: FontWeight.bold,
@@ -45,7 +45,7 @@ class _CommentTileState extends State<CommentTile> {
                     //Comment
                     children: [
                       TextSpan(
-                          text: "nice one",
+                          text: "comment",
                           style: TextStyle(fontWeight: FontWeight.normal))
                     ]),
               ),

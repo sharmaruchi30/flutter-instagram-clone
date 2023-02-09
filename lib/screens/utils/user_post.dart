@@ -1,15 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:instagram_clone/screens/profile_screen.dart';
+import 'package:provider/provider.dart';
+
 import 'package:instagram_clone/providers/home_screen_provider.dart';
 import 'package:instagram_clone/screens/comments_screen.dart';
-import 'package:provider/provider.dart';
 
 class UserPost extends StatefulWidget {
   String image_path;
+  String username;
+  String userProfile;
   UserPost({
     Key? key,
     required this.image_path,
+    required this.username,
+    required this.userProfile,
   }) : super(key: key);
 
   @override
@@ -49,6 +55,7 @@ class _UserPostState extends State<UserPost>
 
   @override
   void dispose() {
+    // ignore: todo
     // TODO: implement dispose
     super.dispose();
     _controller.dispose();
@@ -56,7 +63,6 @@ class _UserPostState extends State<UserPost>
 
   @override
   Widget build(BuildContext context) {
-    print("User post SCreen Built");
     return Container(
       height: ScreenUtil().setHeight(530),
       width: ScreenUtil().screenWidth,
@@ -72,38 +78,59 @@ class _UserPostState extends State<UserPost>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    const CircleAvatar(
-                      child:
-                          Image(image: AssetImage('assets/images/avatar.png')),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "pieroborgo",
-                          style: TextStyle(
-                            fontFamily: 'sfpro',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14.sp,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => ProfileScreen(
+                                selfProfile: false,
+                                bio: "Bio Text here",
+                                user_post_images: const [
+                                  'assets/portraits/one.jpg',
+                                  'assets/portraits/two.jpg',
+                                 'assets/portraits/three.jpg',
+                                 'assets/portraits/five.jpg'
+                                ], 
+                                user_profile: widget.userProfile,
+                                username: widget.username, display_name: 'user',
+                                )
+                                )
+                                )
+                                );
+                  },
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: AssetImage(widget.userProfile),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.username,
+                            style: TextStyle(
+                              fontFamily: 'sfpro',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14.sp,
+                            ),
                           ),
-                        ),
-                        Text(
-                          "Florence, Italy",
-                          style: TextStyle(
-                            fontFamily: 'sfpro',
-                            // fontWeight: FontWeight.w600,
-                            fontSize: 12.sp,
+                          Text(
+                            "Jodhpur",
+                            style: TextStyle(
+                              fontFamily: 'sfpro',
+                              // fontWeight: FontWeight.w600,
+                              fontSize: 12.sp,
+                            ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
                 ),
                 const Icon(
                   Icons.more_horiz,
@@ -118,8 +145,8 @@ class _UserPostState extends State<UserPost>
           GestureDetector(
             onDoubleTap: () {
               homeScreenProvider.liked
-                          ? _controller.reverse()
-                          : _controller.forward();
+                  ? _controller.reverse()
+                  : _controller.forward();
             },
             child: SizedBox(
               width: ScreenUtil().screenWidth,
@@ -177,8 +204,11 @@ class _UserPostState extends State<UserPost>
                       width: 11,
                     ),
                     GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => CommentsPage()));
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CommentsPage()));
                       },
                       child: const SizedBox(
                           height: 20,
@@ -208,7 +238,7 @@ class _UserPostState extends State<UserPost>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 08),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -224,10 +254,9 @@ class _UserPostState extends State<UserPost>
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.white),
                                 borderRadius: BorderRadius.circular(50)),
-                            child: const ClipOval(
-                              child: Image(
-                                  image:
-                                      AssetImage('assets/images/avatar.png')),
+                            child: CircleAvatar(
+                              radius: 10,
+                              backgroundImage: AssetImage(widget.userProfile),
                             ),
                           ),
                         ),
@@ -238,10 +267,9 @@ class _UserPostState extends State<UserPost>
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.white),
                                 borderRadius: BorderRadius.circular(50)),
-                            child: const ClipOval(
-                              child: Image(
-                                  image:
-                                      AssetImage('assets/images/avatar.png')),
+                            child: CircleAvatar(
+                              radius: 10,
+                              backgroundImage: AssetImage(widget.userProfile),
                             ),
                           ),
                         ),
@@ -250,9 +278,9 @@ class _UserPostState extends State<UserPost>
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.white),
                               borderRadius: BorderRadius.circular(50)),
-                          child: const ClipOval(
-                            child: Image(
-                                image: AssetImage('assets/images/avatar.png')),
+                          child: CircleAvatar(
+                            radius: 10,
+                            backgroundImage: AssetImage(widget.userProfile),
                           ),
                         ),
                       ],

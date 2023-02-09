@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,28 +19,40 @@ class _HomeScreenState extends State<HomeScreen> {
   List storyisSelf = [true, false, false, false, false];
   List storyisLive = [false, true, false, false, false];
   List storyImages = [
-    'assets/images/avatar.png',
-    'assets/images/story/Profile 1.png',
-    'assets/images/story/Profile 2.jpg',
-    'assets/images/story/Profile 3.jpg',
-    'assets/images/story/Profile 4.jpg'
+    'assets/profile_.jpg',
+    'assets/profile2.jpg',
+    'assets/profile3.jpg',
+    'assets/profile4.jpg',
+    'assets/profile5.jpg'
   ];
   List storyIdNames = [
     'Your Story',
-    'leevahq',
+    'Sample 1',
     'sample 2',
     "sample 3",
     "sample 4"
   ];
+  List usernames = [
+    'username1',
+    '_username2_',
+    '_username3',
+    'username_4',
+  ];
 
-  List userpostImages = ["assets/images/user_post.jpg" , "assets/images/story/Profile 4.jpg", "assets/images/story/Profile 3.jpg" , "assets/images/story/Profile 2.jpg"];
+  List profiles = [
+    "assets/profile2.jpg",
+    "assets/profile3.jpg",
+    "assets/profile4.jpg",
+    "assets/profile_.jpg",
+  ];
+  List userpostImages = ["assets/portraits/user_post.jpg" , "assets/portraits/story1.jpeg", "assets/portraits/one.jpg" , "assets/portraits/two.jpg"];
   @override
   Widget build(BuildContext context) {
     
     return Scaffold(
         body: SafeArea(
             child: Padding(
-      padding: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20 , bottom: 50),
       child: Column(
         children: [
           //appbar
@@ -58,18 +69,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 Row(
                   children: [
-                    const Image(image: AssetImage('assets/icons/new-video.png')),
+                    const Image(image: AssetImage('assets/icons/post.png'), height: 22,),
                     const SizedBox(
                       width: 20,
                     ),
                     GestureDetector(
                       onTap: (() {
-                        widget.pageController.animateToPage(2, duration:Duration(milliseconds: 200), curve: Curves.easeInOut);
+                        widget.pageController.animateToPage(2, duration:const Duration(milliseconds: 200), curve: Curves.easeInOut);
                       }),
                       child: const SizedBox(
                           height: 22,
                           child:
-                              Image(image: AssetImage('assets/icons/Direct.png'))),
+                              Image(image: AssetImage('assets/icons/chat.png'))),
                     )
                   ],
                 )
@@ -108,10 +119,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   //USER POST
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: 4,
                     itemBuilder: ((context, index) {
-                    return UserPost(image_path: userpostImages[index],);
+                    return UserPost(image_path: userpostImages[index], userProfile: profiles[index], username:usernames[index],);
                   }))
                 ],
               ),

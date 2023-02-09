@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/screens/home_screen.dart';
+import 'package:instagram_clone/screens/likes_bottomnav.dart';
 import 'package:instagram_clone/screens/pages_scroll.dart';
 import 'package:instagram_clone/screens/profile_screen.dart';
+import 'package:instagram_clone/screens/reels_page.dart';
+import 'package:instagram_clone/screens/search_page.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -13,11 +16,23 @@ class BottomNavigation extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigation> {
   int selectedIndex = 0;
+  List<String> user_post_images = [
+    'assets/portraits/storymy3.jpg',
+    'assets/portraits/storymy1.jpg',
+    'assets/landscapes/retrocamera.jpg',
+    'assets/landscapes/laptop.jpg',
+    'assets/landscapes/hpexpress.jpg',
+    'assets/landscapes/retrocamera2.jpg',
+    'assets/landscapes/train.jpg',
+    
+    // 'assets/portraits/hpplatform.jpg',
+    // 'assets/portraits/hpout.jpg',
+  ];
 
   
   @override
   Widget build(BuildContext context) {
-    List<Widget> screens = [PageScroll() ,ProfileScreen() , ProfileScreen() , ProfileScreen() , ProfileScreen()];
+    List<Widget> screens = [PageScroll() ,SearchPage() , ReelsPage() , LikesBottomNav() , ProfileScreen(selfProfile: true,bio: "Flutter Developer",user_post_images: user_post_images, user_profile: 'assets/profile_.jpg', username: '_r_sharma', display_name: 'R. S.',)];
     return Scaffold(
       body: Stack(
         children: [
@@ -28,33 +43,33 @@ class _BottomNavigationState extends State<BottomNavigation> {
               children:[
                 nav_bar_item(
                     context,
-                     Icon(
+                     const Icon(
                       Icons.home_filled,
-                      size: selectedIndex == 0? 32 :28,
+                      size: 32,
                     ),
                     0),
                 nav_bar_item(
                     context,
-                   Icon(
+                   const Icon(
                       CupertinoIcons.search,
-                      size: selectedIndex == 1 ? 32 : 28,
+                      size: 32,
                     ),
                     1),
                 nav_bar_item(context,
                     SizedBox(
-                      height: selectedIndex == 2 ? 32 :30 ,
-                      width: selectedIndex ==2 ? 32 : 30,
+                      height: 32 ,
+                      width: 32,
                       child: Image(image: AssetImage(selectedIndex == 2 ?  "assets/icons/reelssel.png" :"assets/icons/reels.png" ) , color: Colors.black, )) , 2),
-                nav_bar_item(context,Icon( selectedIndex == 3?  CupertinoIcons.heart_fill:CupertinoIcons.heart , size: selectedIndex == 3? 32 : 28,), 3),
+                nav_bar_item(context,Icon( selectedIndex == 3?  CupertinoIcons.heart_fill:CupertinoIcons.heart , size:32), 3),
                 nav_bar_item(
                     context,
                     Column(
 
                       mainAxisAlignment: MainAxisAlignment.center,
                       children:  [
-                        CircleAvatar(
-                          radius: selectedIndex == 4 ?16 : 14,
-                          child: Image(image: AssetImage('assets/images/avatar.png')),
+                        const CircleAvatar(
+                          radius: 16,
+                          backgroundImage:  AssetImage('assets/profile_.jpg'),
                         ),
                         const SizedBox(height: 5,),
                         Container(
